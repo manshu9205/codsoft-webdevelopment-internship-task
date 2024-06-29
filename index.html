@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #1a1a1a; /* Light black background color */
+            font-family: Arial, sans-serif;
+            overflow: hidden; /* Hide overflow to prevent scrollbar during animation */
+        }
+
+        .animation {
+            font-size: 3em;
+            color: white;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            animation: fadeIn 2s ease forwards, moveLeft 2s ease forwards, fadeOut 2s ease forwards 4s;
+        }
+
+        .calculator-container {
+            opacity: 0;
+            animation: fadeIn 2s ease forwards 4s, moveRight 2s ease forwards 4s;
+        }
+
+        .calculator {
+            background-color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .display {
+            background-color: #000;
+            color: #0f0;
+            font-size: 2em;
+            text-align: right;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .button {
+            background-color: #666;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 20px;
+            font-size: 1.5em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .button:hover {
+            background-color: #555;
+        }
+
+        .button:active {
+            background-color: #888; /* Color when button is clicked */
+        }
+
+        .button.operation {
+            background-color: #f0a500;
+        }
+
+        .button.operation:hover {
+            background-color: #d99000;
+        }
+
+        .button.operation:active {
+            background-color: #ffbf00; /* Color when operation button is clicked */
+        }
+
+        .button.zero {
+            grid-column: span 2;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+            }
+        }
+
+        @keyframes moveLeft {
+            from {
+                opacity: 1;
+                transform: translate(-50%, -50%) rotate(0deg) scale(1);
+            }
+            50% {
+                opacity: 0.5;
+                transform: translate(-50%, -50%) rotate(-180deg) scale(1.5);
+            }
+            to {
+                opacity: 0;
+                transform: translate(-50%, -50%) rotate(-360deg) scale(2);
+            }
+        }
+
+        @keyframes moveRight {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="animation">Welcome</div>
+    <div class="calculator-container">
+        <div class="calculator">
+            <div id="display" class="display">0</div>
+            <div class="buttons">
+                <button class="button" onclick="clearDisplay()">AC</button>
+                <button class="button" onclick="deleteLast()">DEL</button>
+                <button class="button operation" onclick="appendCharacter('%')">%</button>
+                <button class="button operation" onclick="appendCharacter('/')">/</button>
+                <button class="button" onclick="appendCharacter('7')">7</button>
+                <button class="button" onclick="appendCharacter('8')">8</button>
+                <button class="button" onclick="appendCharacter('9')">9</button>
+                <button class="button operation" onclick="appendCharacter('*')">×</button>
+                <button class="button" onclick="appendCharacter('4')">4</button>
+                <button class="button" onclick="appendCharacter('5')">5</button>
+                <button class="button" onclick="appendCharacter('6')">6</button>
+                <button class="button operation" onclick="appendCharacter('-')">-</button>
+                <button class="button" onclick="appendCharacter('1')">1</button>
+                <button class="button" onclick="appendCharacter('2')">2</button>
+                <button class="button" onclick="appendCharacter('3')">3</button>
+                <button class="button operation" onclick="appendCharacter('+')">+</button>
+                <button class="button zero" onclick="appendCharacter('0')">0</button>
+                <button class="button" onclick="appendCharacter('.')">.</button>
+                <button class="button operation" onclick="calculate()">=</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let display = document.getElementById('display');
+
+        function clearDisplay() {
+            display.innerText = '0';
+        }
+
+        function deleteLast() {
+            if (display.innerText.length > 1) {
+                display.innerText = display.innerText.slice(0, -1);
+            } else {
+                display.innerText = '0';
+            }
+        }
+
+        function appendCharacter(character) {
+            if (display.innerText === '0' && character !== '.') {
+                display.innerText = character;
+            } else {
+                display.innerText += character;
+            }
+        }
+
+        function calculate() {
+            try {
+                display.innerText = eval(display.innerText.replace('×', '*').replace('÷', '/'));
+            } catch {
+                display.innerText = 'Error';
+            }
+        }
+    </script>
+</body>
+</html>
